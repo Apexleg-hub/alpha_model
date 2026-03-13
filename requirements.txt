@@ -1,0 +1,9 @@
+streamlit>=1.32.0
+numpy>=1.26.0
+pandas>=2.0.0
+scikit-learn>=1.4.0
+hmmlearn>=0.3.2
+plotly>=5.20.0
+scipy>=1.12.0
+# Optional — only needed for live MT5 data:
+MetaTrader5>=5.0.45   # Windows only
