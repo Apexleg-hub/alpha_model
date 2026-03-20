@@ -18,10 +18,10 @@ from __future__ import annotations
 import numpy as np
 from dataclasses import dataclass
 
-from alpha_model.config import AggregatorConfig, DEFAULT_CONFIG
-from alpha_model.models.svm_signal   import SVMResult
-from alpha_model.models.lstm_signal  import LSTMResult
-from alpha_model.models.iso_forest   import IsoResult
+from config.config import AggregatorConfig, DEFAULT_CONFIG
+from models.svm_signal   import SVMResult
+from models.lstm_signal  import LSTMResult
+from models.iso_forest   import IsoResult
 
 
 @dataclass

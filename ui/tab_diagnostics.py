@@ -17,9 +17,9 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 
-from alpha_model.models.svm_signal  import SVMResult
-from alpha_model.models.lstm_signal import LSTMResult
-from alpha_model.utils.charts       import CHART_LAYOUT, apply_base_layout
+from models.svm_signal  import SVMResult
+from models.lstm_signal import LSTMResult
+from ui.utils.charts       import CHART_LAYOUT, apply_base_layout
 
 
 _FEAT_COLS = [
@@ -39,7 +39,7 @@ def render(df: pd.DataFrame,
            lstm: LSTMResult) -> None:
 
     # ── Feature correlation heatmap ───────────────────────────────────────────
-    st.markdown("### 🔬 Feature Correlation Heatmap")
+    st.markdown("### Feature Correlation Heatmap")
     corr = df[_FEAT_COLS].corr()
     fig_corr = px.imshow(
         corr, text_auto=".2f", aspect="auto",
@@ -50,7 +50,7 @@ def render(df: pd.DataFrame,
     st.plotly_chart(fig_corr, use_container_width=True)
 
     # ── Signal agreement ──────────────────────────────────────────────────────
-    st.markdown("### 📊 Signal Agreement")
+    st.markdown("### Signal Agreement")
     mask  = (svm.signal != 0) | (lstm.signal != 0)
     if mask.sum() > 0:
         agree = ((svm.signal[mask] == lstm.signal[mask]) &
@@ -60,7 +60,7 @@ def render(df: pd.DataFrame,
     st.metric("SVM ↔ LSTM Agreement (on signal bars)", f"{agree:.1f}%")
 
     # ── Return distribution ────────────────────────────────────────────────────
-    st.markdown("### 📈 Log-Return Distribution")
+    st.markdown("### Log-Return Distribution")
     rets = df["LogRet"].values * 100
     fig_ret = go.Figure()
     fig_ret.add_trace(go.Histogram(
@@ -73,6 +73,6 @@ def render(df: pd.DataFrame,
     st.plotly_chart(fig_ret, use_container_width=True)
 
     # ── Raw feature table ──────────────────────────────────────────────────────
-    st.markdown("### 📄 Raw Feature DataFrame — Last 20 Bars")
+    st.markdown("### Raw Feature DataFrame — Last 20 Bars")
     cols = [c for c in _DISPLAY_COLS if c in df.columns]
     st.dataframe(df[cols].tail(20).round(5), use_container_width=True)

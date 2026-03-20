@@ -17,7 +17,7 @@ import pandas as pd
 from dataclasses import dataclass
 from typing import Tuple
 
-from alpha_model.config import RegimeConfig, DEFAULT_CONFIG
+from config.config import RegimeConfig, DEFAULT_CONFIG
 
 
 @dataclass

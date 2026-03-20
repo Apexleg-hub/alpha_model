@@ -16,9 +16,9 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 
-from alpha_model.models.aggregator   import AggResult
-from alpha_model.config              import AggregatorConfig, DEFAULT_CONFIG
-from alpha_model.utils.charts        import REGIME_COLOR, apply_base_layout
+from models.aggregator   import AggResult
+from config.config              import AggregatorConfig, DEFAULT_CONFIG
+from ui.utils.charts        import REGIME_COLOR, apply_base_layout
 
 
 def render(df: pd.DataFrame,
@@ -40,7 +40,7 @@ def render(df: pd.DataFrame,
     cur_sig = int(result.signal[-1])
     sig_text  = "▲ LONG" if cur_sig == 1 else ("▼ SHORT" if cur_sig == -1 else "— FLAT")
     badge_cls = "badge-long" if cur_sig == 1 else ("badge-short" if cur_sig == -1 else "badge-flat")
-    reg_color = REGIME_COLOR.get(cur_regime, "#94a3b8")
+    reg_color = REGIME_COLOR.get(cur_regime, "#4686e0")
 
     st.markdown(
         f'<p style="font-size:15px; margin-bottom:4px;">'
@@ -50,6 +50,22 @@ def render(df: pd.DataFrame,
         f'</p>',
         unsafe_allow_html=True,
     )
+
+    # ── Signal confidence ─────────────────────────────────────────────────────
+    cur_strength = float(result.strength[-1]) if len(result.strength) else 0.0
+    strength_pct = cur_strength * 100
+    if cur_strength >= 0.67:
+        strength_label = "Strong"
+    elif cur_strength >= 0.34:
+        strength_label = "Moderate"
+    else:
+        strength_label = "Weak"
+
+    sc1, sc2 = st.columns([1, 3])
+    with sc1:
+        st.metric("Signal Confidence", f"{strength_pct:.0f}%", strength_label)
+    with sc2:
+        st.progress(int(min(max(strength_pct, 0), 100)))
 
     # ── Weights table ─────────────────────────────────────────────────────────
     st.markdown("#### Regime-Dependent Model Weights")
@@ -68,7 +84,7 @@ def render(df: pd.DataFrame,
     threshold = cfg.signal_threshold
     st.markdown(
         f'<div class="explain-box">'
-        f'<b>📖 Plain English:</b> Each model votes at every bar. Votes are '
+        f'<b>Plain English:</b> Each model votes at every bar. Votes are '
         f'scaled by the model\'s confidence and then combined using '
         f'regime-dependent weights (table above). The raw weighted score must '
         f'exceed <b>±{threshold}</b> to produce a trade signal — below that '

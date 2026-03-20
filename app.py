@@ -12,22 +12,25 @@ Run (from the alpha_model parent directory):
 
 import streamlit as st
 
-from -alpha-model-V1.config        import PipelineConfig, RiskConfig, RegimeConfig
-from alpha_model.pipeline      import run_pipeline
-from alpha_model.utils         import inject_css
-from alpha_model.ui.sidebar    import render_sidebar
-from alpha_model.ui.header     import render_header, render_kpis
-from alpha_model.ui            import tab_market      as _tm
-from alpha_model.ui            import tab_signals     as _ts
-from alpha_model.ui            import tab_aggregator  as _ta
-from alpha_model.ui            import tab_risk        as _tr
-from alpha_model.ui            import tab_trades      as _tt
-from alpha_model.ui            import tab_diagnostics as _td
+
+from config.config             import PipelineConfig, RiskConfig, RegimeConfig
+from pipeline.pipeline         import run_pipeline
+from ui.utils.styles    import inject_css
+from ui.sidebar         import render_sidebar
+from ui.header          import render_header, render_kpis
+from ui            import tab_market      as _tm
+from ui            import tab_signals     as _ts
+from ui            import tab_aggregator  as _ta
+from ui            import tab_risk        as _tr
+from ui            import tab_trades      as _tt
+from ui            import tab_diagnostics as _td
+from ui            import tab_validation  as _tv
+from ui            import tab_targets     as _tp
 
 # ── Page configuration ────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Alpha Model v1",
-    page_icon="📈",
+    page_icon=" Eve",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -80,13 +83,17 @@ if params.run:
     )
 
     with st.spinner("Running pipeline…"):
-        result = run_pipeline(
-            symbol=params.symbol,
-            timeframe=params.timeframe,
-            n_bars=params.n_bars,
-            use_live=params.use_live,
-            cfg=cfg,
-        )
+        try:
+            result = run_pipeline(
+                symbol=params.symbol,
+                timeframe=params.timeframe,
+                n_bars=params.n_bars,
+                use_live=True,
+                cfg=cfg,
+            )
+        except RuntimeError as exc:
+            st.error(f"MT5 connection failed: {exc}")
+            st.stop()
 
     st.session_state["result"]  = result
     st.session_state["params"]  = params
@@ -109,12 +116,14 @@ if "result" in st.session_state:
     )
 
     tabs = st.tabs([
-        "📡 Market & Regimes",
-        "🤖 Signal Models",
-        "⚖️ Aggregator",
-        "🛡️ Risk & Equity",
-        "📋 Trades",
-        "🔬 Diagnostics",
+        " Market & Regimes",
+        " Signal Models",
+        " Aggregator",
+        " Price Targets",
+        " Risk & Equity",
+        " Trades",
+        " Diagnostics",
+        " Validation",
     ])
 
     with tabs[0]:
@@ -127,10 +136,16 @@ if "result" in st.session_state:
         _ta.render(df, R.agg, cur_regime)
 
     with tabs[3]:
-        _tr.render(df, R.risk, R.execution, P.kelly_fraction)
+        _tp.render(df, R.agg)
 
     with tabs[4]:
-        _tt.render(R.execution)
+        _tr.render(df, R.risk, R.execution, P.kelly_fraction)
 
     with tabs[5]:
+        _tt.render(R.execution)
+
+    with tabs[6]:
         _td.render(df, R.svm, R.lstm)
+
+    with tabs[7]:
+        _tv.render(df, R.agg, R.svm, R.lstm, R.iso)

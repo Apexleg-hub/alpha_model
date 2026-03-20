@@ -35,7 +35,7 @@ alpha_model/
 ├── requirements.txt
 │
 ├── data/
-│   └── loader.py             # MT5 live data + synthetic fallback
+│   └── loader.py             # MT5 live data loader (no synthetic fallback)
 │
 ├── features/
 │   └── engineering.py        # RSI, EMA, EWMA vol, ATR, Bollinger, volume
@@ -59,9 +59,11 @@ alpha_model/
     ├── tab_market.py          # Tab 1: price chart + regime bands
     ├── tab_signals.py         # Tab 2: SVM / LSTM / IsoForest signal panels
     ├── tab_aggregator.py      # Tab 3: aggregated signal + weights table
-    ├── tab_risk.py            # Tab 4: equity curve + Kelly + EWMA vol
-    ├── tab_trades.py          # Tab 5: trade log + P&L chart
-    └── tab_diagnostics.py     # Tab 6: feature correlations + return dist
+    ├── tab_targets.py         # Tab 4: math-based buy/sell price targets
+    ├── tab_risk.py            # Tab 5: equity curve + Kelly + EWMA vol
+    ├── tab_trades.py          # Tab 6: trade log + P&L chart
+    ├── tab_diagnostics.py     # Tab 7: feature correlations + return dist
+    └── tab_validation.py      # Tab 8: prediction vs outcome + OOS validation
 ```
 
 ## Quick Start
@@ -84,7 +86,7 @@ streamlit run alpha_model/app.py
 
 ## Integrating Live MT5
 
-Toggle **Live MT5 Data** in the sidebar. `data/loader.py` calls `mt5.initialize()` and falls back to synthetic data if MT5 is not available or the connection fails.
+Live MT5 data is required. `data/loader.py` calls `mt5.initialize()` and requires a live MT5 connection (no synthetic fallback).
 
 For Windows with MT5 installed:
 ```bash

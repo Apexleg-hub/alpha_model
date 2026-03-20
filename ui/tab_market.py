@@ -18,7 +18,7 @@ import streamlit as st
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from alpha_model.utils.charts import (
+from ui.utils.charts import (
     CHART_LAYOUT, EMA_COLORS, CANDLE_UP, CANDLE_DOWN,
     REGIME_COLOR, add_regime_bands, apply_base_layout,
 )
@@ -40,7 +40,7 @@ def render(df: pd.DataFrame, regimes: np.ndarray,
     with col_explain:
         st.markdown(
             '<div class="explain-box">'
-            '<b>📖 Plain English:</b> Candles show OHLC price. '
+            '<b> Plain English:</b> Candles show OHLC price. '
             'EMA 9 (blue), 21 (amber), and 50 (purple) track short-, '
             'medium-, and long-term trend. Volume bars confirm moves. '
             'RSI measures momentum (overbought &gt; 70, oversold &lt; 30). '

@@ -1,7 +1,7 @@
 """
 ui/header.py
-─────────────
-Page title, live/demo status badge, and the six top-level KPI metric cards.
+------------
+Page title, live/connection status badge, and the six top-level KPI metric cards.
 """
 
 from __future__ import annotations
@@ -9,23 +9,42 @@ import numpy as np
 import streamlit as st
 from typing import Any, Dict
 
-from alpha_model.utils.charts import REGIME_COLOR
+from ui.utils.charts import REGIME_COLOR
 
 
 def render_header(is_live: bool) -> None:
     c1, c2 = st.columns([3, 1])
     with c1:
-        st.markdown("# 📈 Alpha Model v1")
+        st.markdown("#  Alpha Model v1")
         st.markdown(
-            "*Quantitative Signal Pipeline — MT5 · HMM · SVM · LSTM · Isolation Forest*"
+            '<div class="pipeline-kicker">Quantitative Signal Pipeline</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<div class="pipeline-sub">MT5 | HMM | SVM | LSTM | Isolation Forest</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            """
+            <div class="explain-box">
+              <div class="explain-title">Model Notes</div>
+              <ul>
+                <li><strong>Isolation Forest</strong> identifies outliers by isolating them through random partitioning.</li>
+                <li><strong>Support Vector Machines (SVM)</strong> are supervised learners for classification and regression.</li>
+                <li><strong>Hidden Markov Models (HMM)</strong> represent systems with hidden states and observable outputs.</li>
+                <li><strong>Long Short-Term Memory (LSTM)</strong> captures long-term dependencies in sequential data.</li>
+              </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
     with c2:
         st.markdown("<br>", unsafe_allow_html=True)
         if is_live:
-            st.markdown('<span class="status-live">● LIVE</span>',
+            st.markdown('<span class="status-pill status-live">LIVE</span>',
                         unsafe_allow_html=True)
         else:
-            st.markdown('<span class="status-demo">● DEMO</span>',
+            st.markdown('<span class="status-pill status-demo">NO DATA</span>',
                         unsafe_allow_html=True)
     st.markdown("---")
 
@@ -36,7 +55,7 @@ def render_kpis(symbol: str, timeframe: str,
                 stats: Dict[str, Any]) -> None:
     k1, k2, k3, k4, k5, k6 = st.columns(6)
 
-    sig_label  = "▲ LONG" if cur_sig == 1 else ("▼ SHORT" if cur_sig == -1 else "— FLAT")
+    sig_label  = " LONG" if cur_sig == 1 else (" SHORT" if cur_sig == -1 else " - FLAT")
     regime_pct = f"{(regimes == cur_regime).mean() * 100:.0f}% of bars"
     reg_color  = REGIME_COLOR.get(cur_regime, "#94a3b8")
 

@@ -14,10 +14,10 @@ import streamlit as st
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from alpha_model.models.svm_signal   import SVMResult
-from alpha_model.models.lstm_signal  import LSTMResult
-from alpha_model.models.iso_forest   import IsoResult
-from alpha_model.utils.charts        import CHART_LAYOUT, apply_base_layout
+from models.svm_signal   import SVMResult
+from models.lstm_signal  import LSTMResult
+from models.iso_forest   import IsoResult
+from ui.utils.charts        import CHART_LAYOUT, apply_base_layout
 
 
 def render(df: pd.DataFrame,

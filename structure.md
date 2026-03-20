@@ -7,7 +7,7 @@ alpha_model/
 ├── README.md
 │
 ├── data/
-│   └── loader.py       ← MT5 live + synthetic fallback, @st.cache_data
+│   └── loader.py       ← MT5 live data only, @st.cache_data
 │
 ├── features/
 │   └── engineering.py  ← RSI, EMA, EWMA vol, ATR, Bollinger, volume features
@@ -34,6 +34,8 @@ alpha_model/
     ├── tab_risk.py      ← Equity curve, drawdown, Kelly, EWMA vol
     ├── tab_trades.py    ← P&L chart, trade log table
     ├── tab_diagnostics.py← Correlation heatmap, return dist, raw feature table
+    ├── tab_validation.py ← Prediction vs outcome + OOS validation dashboard
+    ├── tab_targets.py    ← Math-based buy/sell price targets
     └── utils/
         ├── charts.py    ← Shared Plotly tokens, REGIME_COLOR, add_regime_bands
         └── styles.py    ← All CSS in one inject_css() call

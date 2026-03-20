@@ -15,8 +15,8 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 
-from alpha_model.execution.simulator import ExecResult
-from alpha_model.utils.charts        import apply_base_layout
+from execution.simulator import ExecResult
+from ui.utils.charts        import apply_base_layout
 
 
 def render(exec_result: ExecResult) -> None:

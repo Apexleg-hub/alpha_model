@@ -19,7 +19,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from alpha_model.config import FeatureConfig, DEFAULT_CONFIG
+from config.config import FeatureConfig, DEFAULT_CONFIG
 
 
 # ── Public API ────────────────────────────────────────────────────────────────

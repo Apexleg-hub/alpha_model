@@ -20,7 +20,7 @@ import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, Any
 
-from alpha_model.config import ExecutionConfig, DEFAULT_CONFIG
+from config.config import ExecutionConfig, DEFAULT_CONFIG
 
 
 @dataclass
@@ -45,7 +45,7 @@ def simulate_execution(df: pd.DataFrame,
     if cfg is None:
         cfg = DEFAULT_CONFIG.execution
     if account_equity is None:
-        from alpha_model.config import DEFAULT_CONFIG as DC
+        from config import DEFAULT_CONFIG as DC
         account_equity = DC.risk.account_equity
 
     equity      = [account_equity]

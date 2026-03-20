@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 
-from alpha_model.config import IsoForestConfig, DEFAULT_CONFIG
+from config.config import IsoForestConfig, DEFAULT_CONFIG
 
 
 @dataclass

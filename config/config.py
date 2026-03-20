@@ -11,25 +11,9 @@ from typing import Dict, List
 
 # ── Symbols & timeframes ───────────────────────────────────────────────────────
 SYMBOLS: List[str] = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF"]
-TIMEFRAMES: List[str] = ["D1", "H4", "W1", "MN1"]
+TIMEFRAMES: List[str] = ["H4", "D1", "W1", "MN1"]
 
-# Base prices used for synthetic data generation
-BASE_PRICES: Dict[str, float] = {
-    "EURUSD": 1.0850, "GBPUSD": 1.2700, "USDJPY": 149.50,
-    "AUDUSD": 0.6500, "USDCAD": 1.3600, "USDCHF": 0.8900,
-}
-
-# Per-timeframe daily-equivalent volatility
-TF_VOL: Dict[str, float] = {
-    "H4": 0.0015, "D1": 0.006, "W1": 0.012, "MN1": 0.025,
-}
-
-# Pandas freq aliases for synthetic date generation
-TF_FREQ: Dict[str, str] = {
-    "H4": "4h", "D1": "D", "W1": "W", "MN1": "ME",
-}
-
-
+# (Synthetic-data constants removed; live MT5 only.)
 # ── Feature engineering ────────────────────────────────────────────────────────
 @dataclass
 class FeatureConfig:

@@ -18,9 +18,9 @@ import streamlit as st
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from alpha_model.risk.engine         import RiskResult
-from alpha_model.execution.simulator import ExecResult
-from alpha_model.utils.charts        import apply_base_layout, CHART_LAYOUT
+from risk.engine         import RiskResult
+from execution.simulator import ExecResult
+from ui.utils.charts        import apply_base_layout, CHART_LAYOUT
 
 
 def render(df: pd.DataFrame,
@@ -57,7 +57,7 @@ def render(df: pd.DataFrame,
     with col_explain:
         st.markdown(
             f'<div class="explain-box">'
-            f'<b>📖 Kelly Criterion:</b> Given win probability <i>p</i> and '
+            f'<b> Kelly Criterion:</b> Given win probability <i>p</i> and '
             f'payoff ratio <i>b</i> = avg_win / avg_loss, the optimal fraction '
             f'to risk is <b>f = (p·b − (1−p)) / b</b>. Full Kelly maximises '
             f'long-run growth but causes extreme drawdowns. We use '

@@ -9,7 +9,7 @@ from __future__ import annotations
 import streamlit as st
 from dataclasses import dataclass
 
-from alpha_model.config import SYMBOLS, TIMEFRAMES
+from config.config import SYMBOLS, TIMEFRAMES
 
 
 @dataclass
@@ -22,13 +22,12 @@ class SidebarParams:
     max_risk_pct:   float   # already divided by 100
     kelly_fraction: float
     max_dd_pct:     float   # already divided by 100
-    use_live:       bool
     run:            bool    # True when the "Run Pipeline" button was clicked
 
 
 def render_sidebar() -> SidebarParams:
     with st.sidebar:
-        st.markdown("## ⚙️ Parameters")
+        st.markdown("##  Parameters")
         st.markdown("---")
 
         symbol    = st.selectbox("Symbol",    SYMBOLS,    index=0)
@@ -37,23 +36,17 @@ def render_sidebar() -> SidebarParams:
         n_regimes = st.slider("HMM States", 2, 4, 3)
 
         st.markdown("---")
-        st.markdown("### 💰 Risk Settings")
-        account_equity  = st.number_input("Account Equity ($)", 1_000, 1_000_000,
-                                          10_000, 1_000)
+        st.markdown("###  Risk Settings")
+        account_equity  = st.number_input("Account Equity ($)", 1_00, 2_00)
         max_risk_pct    = st.slider("Max Risk / Trade (%)", 0.5, 5.0, 2.0, 0.5) / 100
         kelly_fraction  = st.slider("Kelly Fraction",       0.1, 1.0, 0.25, 0.05)
         max_dd_pct      = st.slider("Max Drawdown Limit (%)", 5, 50, 15, 5) / 100
 
         st.markdown("---")
-        st.markdown("### 🔌 Data Source")
-        use_live = st.toggle("Live MT5 Data", value=False)
-        st.caption(
-            "🟢 MT5 connection attempted. Falls back to demo if unavailable."
-            if use_live else
-            "🟡 Demo mode — synthetic realistic data."
-        )
+        st.markdown("### Data Source")
+        st.caption(" Live MT5 data required. Ensure MT5 is running.")
 
-        run = st.button("▶  Run Pipeline", use_container_width=True, type="primary")
+        run = st.button("  Run Pipeline", use_container_width=True, type="primary")
 
     return SidebarParams(
         symbol=symbol,
@@ -64,6 +57,5 @@ def render_sidebar() -> SidebarParams:
         max_risk_pct=max_risk_pct,
         kelly_fraction=kelly_fraction,
         max_dd_pct=max_dd_pct,
-        use_live=use_live,
         run=run,
     )

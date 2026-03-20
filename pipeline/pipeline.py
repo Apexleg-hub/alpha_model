@@ -9,7 +9,7 @@ Usage
     from alpha_model.config   import PipelineConfig
 
     result = run_pipeline(symbol="EURUSD", timeframe="D1",
-                          n_bars=250, use_live=False,
+                          n_bars=250, use_live=True,
                           cfg=PipelineConfig())
 
 No Streamlit dependency here — this module is safe to call from unit tests,
@@ -22,16 +22,16 @@ import pandas as pd
 from dataclasses import dataclass
 from typing import Any, Dict
 
-from alpha_model.config              import PipelineConfig, DEFAULT_CONFIG
-from alpha_model.data.loader         import load_bars
-from alpha_model.features.engineering import add_features
-from alpha_model.models.regime        import detect_regimes,         RegimeResult
-from alpha_model.models.svm_signal    import run_svm,                SVMResult
-from alpha_model.models.lstm_signal   import run_lstm,               LSTMResult
-from alpha_model.models.iso_forest    import run_isolation_forest,   IsoResult
-from alpha_model.models.aggregator    import aggregate,              AggResult
-from alpha_model.risk.engine          import compute_risk,           RiskResult
-from alpha_model.execution.simulator  import simulate_execution,     ExecResult
+from config              import PipelineConfig, DEFAULT_CONFIG
+from data.loader         import load_bars
+from features.engineering import add_features
+from models.regime        import detect_regimes,         RegimeResult
+from models.svm_signal    import run_svm,                SVMResult
+from models.lstm_signal   import run_lstm,               LSTMResult
+from models.iso_forest    import run_isolation_forest,   IsoResult
+from models.aggregator    import aggregate,              AggResult
+from risk.engine          import compute_risk,           RiskResult
+from execution.simulator  import simulate_execution,     ExecResult
 
 
 @dataclass
